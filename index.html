@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111318" />
+  <meta name="description" content="A personal, installable news reader that brings many sources into one clean feed." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Pressroom</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" id="brandButton" aria-label="Go to top">
+        <span class="brand-mark">P</span>
+        <span class="brand-copy"><strong>Pressroom</strong><small>your news, minus the noise</small></span>
+      </button>
+
+      <div class="top-actions">
+        <button class="icon-button" id="searchToggle" aria-label="Search">⌕</button>
+        <button class="icon-button" id="savedToggle" aria-label="Saved articles">☆</button>
+        <button class="icon-button" id="settingsToggle" aria-label="Settings">⚙</button>
+      </div>
+    </header>
+
+    <section class="search-panel hidden" id="searchPanel">
+      <form id="searchForm" class="search-form">
+        <input id="searchInput" autocomplete="off" placeholder="Search the news…" aria-label="Search the news" />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <nav class="category-strip" id="categoryStrip" aria-label="News categories">
+      <button class="category active" data-category="top">Top</button>
+      <button class="category" data-category="world">World</button>
+      <button class="category" data-category="us">U.S.</button>
+      <button class="category" data-category="business">Business</button>
+      <button class="category" data-category="technology">Tech</button>
+      <button class="category" data-category="science">Science</button>
+      <button class="category" data-category="sports">Sports</button>
+      <button class="category" data-category="culture">Culture</button>
+      <button class="category" data-category="custom">My Feeds</button>
+    </nav>
+
+    <main>
+      <section class="status-row">
+        <div>
+          <p class="eyebrow" id="feedEyebrow">TOP STORIES</p>
+          <h1 id="feedTitle">Today</h1>
+        </div>
+        <div class="status-actions">
+          <span id="articleCount" class="muted"></span>
+          <button class="text-button" id="refreshButton">Refresh</button>
+        </div>
+      </section>
+
+      <section class="source-filter hidden" id="sourceFilter"></section>
+      <section id="heroSection"></section>
+      <section class="feed-grid" id="feedGrid" aria-live="polite"></section>
+
+      <section id="emptyState" class="empty-state hidden">
+        <div class="empty-symbol">◫</div>
+        <h2>Nothing here yet</h2>
+        <p id="emptyText">Try refreshing or switching categories.</p>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="readerDialog" class="reader-dialog">
+    <article class="reader-card">
+      <div class="reader-toolbar">
+        <button class="icon-button" id="closeReader" aria-label="Close article">×</button>
+        <div class="reader-toolbar-actions">
+          <button class="icon-button" id="saveReader" aria-label="Save article">☆</button>
+          <button class="icon-button" id="shareReader" aria-label="Share article">↗</button>
+        </div>
+      </div>
+      <div class="reader-body" id="readerBody"></div>
+    </article>
+  </dialog>
+
+  <dialog id="settingsDialog" class="settings-dialog">
+    <form method="dialog" class="settings-card" id="settingsForm">
+      <div class="dialog-head">
+        <div><p class="eyebrow">SETTINGS</p><h2>Pressroom setup</h2></div>
+        <button class="icon-button" value="cancel" aria-label="Close settings">×</button>
+      </div>
+
+      <label>
+        <span>Backend URL</span>
+        <input id="apiBaseInput" placeholder="https://your-worker.workers.dev" />
+        <small>Deploy the included Cloudflare Worker, then paste its URL here once.</small>
+      </label>
+
+      <label>
+        <span>Custom RSS feeds</span>
+        <textarea id="customFeedsInput" rows="7" placeholder="One feed per line\nhttps://example.com/rss.xml"></textarea>
+        <small>These appear under “My Feeds.”</small>
+      </label>
+
+      <label class="setting-row">
+        <span>Compact cards</span>
+        <input type="checkbox" id="compactToggle" />
+      </label>
+
+      <label class="setting-row">
+        <span>Dark mode</span>
+        <input type="checkbox" id="darkToggle" />
+      </label>
+
+      <div class="settings-actions">
+        <button class="secondary-button" type="button" id="installButton">Install app</button>
+        <button class="primary-button" value="default" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="articleTemplate">
+    <article class="story-card">
+      <button class="story-open">
+        <div class="story-image-wrap"><img class="story-image" alt="" loading="lazy" /></div>
+        <div class="story-content">
+          <div class="story-meta"><span class="story-source"></span><span>•</span><time class="story-time"></time></div>
+          <h2 class="story-title"></h2>
+          <p class="story-description"></p>
+        </div>
+      </button>
+      <button class="save-button" aria-label="Save article">☆</button>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
